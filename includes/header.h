@@ -10,7 +10,7 @@
 
 // define window size
 # define WIDTH 1024
-# define HEIGHT 768
+# define HEIGHT 512
 // define map size
 # define MAP_WIDTH 16
 # define MAP_HEIGHT 12

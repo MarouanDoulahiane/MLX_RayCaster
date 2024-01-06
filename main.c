@@ -23,12 +23,11 @@ int	map[] = {
 	1, 0, 0, 0, 0, 0, 0, 1, // 7
 	1, 1, 1, 1, 1, 1, 1, 1, // 8
 };
-}
 
 // if you have (x, y) and you want to know the value of the map in this position you can use this function
 int	getMapValue(int x, int y)
 {
-	return (map[y * 16 + x]);
+	return (map[y * 8 + x]);
 }
 
 void	 drawMap(t_data *data)
@@ -38,7 +37,7 @@ void	 drawMap(t_data *data)
 
 	x = 0;
 	// each 64 pixel is a square in the map
-	while (x < WIDTH)
+	while (x < WIDTH / 2)
 	{
 		y = 0;
 		while (y < HEIGHT)
@@ -66,6 +65,8 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
 	char	*dst;
 
+	if (x < 0 || x >= WIDTH || y < 0 || y >= HEIGHT)
+		return ;
 	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
 	*(unsigned int*)dst = color;
 }
@@ -105,7 +106,7 @@ void draw(t_data data)
 	data.img = mlx_new_image(data.mlx, WIDTH, HEIGHT);
 	data.addr = mlx_get_data_addr(data.img, \
 		&data.bits_per_pixel, &data.line_length, &data.endian);
-	for(int x = 0; x < WIDTH; x++) {
+	for(int x = 0; x < WIDTH / 2; x++) {
 		for (int y = 0; y < HEIGHT; y++)
 		{
 			if (x % 64 == 0 || y % 64 == 0)
@@ -161,7 +162,14 @@ int	fun(int key, t_data *data)
 		data->dx = cos(data->angle) * 15;
 		data->dy = sin(data->angle) * 15;
 	}
-
+	if (data->x < 0)
+		data->x = 0;
+	if (data->x > WIDTH / 2)
+		data->x = WIDTH / 2;
+	if (data->y < 0)
+		data->y = 0;
+	if (data->y > HEIGHT)
+		data->y = HEIGHT;
 	draw(*data);
 	return (0);
 }
