@@ -17,3 +17,4 @@ int	quiteWindow()
 	printf("See u Soon Baby •_^\n");
 	exit(0);
 }
+// my pleasure

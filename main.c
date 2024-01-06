@@ -97,6 +97,90 @@ void clearLineInFront(t_data data) {
     }
 }
 
+void	mlx_line_put(t_data *data, int x1, int y1, int x2, int y2, int color)
+{
+	int dx;
+	int dy;
+	int x;
+	int y;
+	int i;
+	int j;
+
+	dx = x2 - x1;
+	dy = y2 - y1;
+	x = x1;
+	y = y1;
+	i = 0;
+	j = 0;
+	if (abs(dx) > abs(dy))
+	{
+		while (i < abs(dx))
+		{
+			x += dx > 0 ? 1 : -1;
+			y += dy * abs(dx) / dx;
+			my_mlx_pixel_put(data, x, y, color);
+			i++;
+		}
+	}
+	else
+	{
+		while (j < abs(dy))
+		{
+			x += dx * abs(dy) / dy;
+			y += dy > 0 ? 1 : -1;
+			my_mlx_pixel_put(data, x, y, color);
+			j++;
+		}
+	}
+}
+
+void	drawRays3D(t_data *data)
+{
+	int r, mx, my, mp, dof;
+	float rx, ry, ra, xo, yo;
+	ra = data->angle;
+
+	for (r = 0; r < 1; r++)
+	{
+		// --- Horizontal lines ---
+		dof = 0;
+		float aTan = -1 / tan(ra);
+		if (ra > M_PI) { // looking up
+			ry = (((int)data->y >> 6) << 6) - 0.0001;
+			rx = (data->y - ry) * aTan + data->x;
+			yo = -64;
+			xo = -yo * aTan;
+		}
+		if (ra < M_PI) { // looking down
+			ry = (((int)data->y >> 6) << 6) + 64;
+			rx = (data->y - ry) * aTan + data->x;
+			yo = 64;
+			xo = -yo * aTan;
+		}
+		if (ra == 0 || ra == M_PI) { // looking straight left or right
+			rx = data->x;
+			ry = data->y;
+			dof = 8;
+		}
+		while (dof < 8)
+		{
+			mx = (int)(rx) >> 6;
+			my = (int)(ry) >> 6;
+			mp = my * 8 + mx;
+			if (mp > 0 && mp < 64 && map[mp] == 1) {
+				dof = 8;
+			}
+			else
+			{
+				rx += xo;
+				ry += yo;
+				dof += 1;
+			}
+		}
+	}
+	// draw line from player to wall
+	mlx_line_put(data, data->x, data->y, rx, ry, GREEN);
+}
 
 void draw(t_data data)
 {
@@ -117,6 +201,7 @@ void draw(t_data data)
 	}
 	drawPlayerCircle(data);
 	clearLineInFront(data);
+	drawRays3D(&data);
 	mlx_put_image_to_window(data.mlx, data.mlx_win, data.img, 0, 0);
 	// return 0;
 }
