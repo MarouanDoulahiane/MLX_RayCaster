@@ -85,7 +85,7 @@ void drawPlayerCircle(t_data data) {
 }
 
 void clearLineInFront(t_data data) {
-    float lineLength = 15.0f; // Length of the line to clear in front of the player
+    float lineLength = 5.0f; // Length of the line to clear in front of the player
     int boldness = 2; // Adjust this value to control the line's boldness
 
     for (int i = 0; i < lineLength; i++) {
@@ -152,16 +152,16 @@ int	fun(int key, t_data *data)
 		data->angle += 0.2;
 		if (data->angle > 2 * M_PI)
 			data->angle -= 2 * M_PI;
-		data->dx = cos(data->angle) * 5;
-		data->dy = sin(data->angle) * 5;
+		data->dx = cos(data->angle) * 15;
+		data->dy = sin(data->angle) * 15;
 	}
 	else if (key == 123)
 	{
 		data->angle -= 0.2;
 		if (data->angle < 0)
 			data->angle += 2 * M_PI;
-		data->dx = cos(data->angle) * 5;
-		data->dy = sin(data->angle) * 5;
+		data->dx = cos(data->angle) * 15;
+		data->dy = sin(data->angle) * 15;
 	}
 
 	draw(*data);
