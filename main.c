@@ -164,15 +164,8 @@ int	fun(int key, t_data *data)
 		data->dy = sin(data->angle) * 5;
 	}
 
-	printf("%d\n", key);
 	draw(*data);
-	// else
-		return (0);
-	// mlx_clear_window(data->mlx, data->mlx_win);
-	// printf("x: %d\ty: %d\n", data->x, data->y);
-	// drawInitPlayer(data);
-	// drawMap(data);
-	// return (0);
+	return (0);
 }
 
 // int fun(int a, t_data *x)
